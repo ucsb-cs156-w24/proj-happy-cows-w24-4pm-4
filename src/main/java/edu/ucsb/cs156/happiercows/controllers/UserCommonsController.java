@@ -19,6 +19,8 @@ import edu.ucsb.cs156.happiercows.entities.Commons;
 import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import edu.ucsb.cs156.happiercows.errors.NoCowsException;
 import edu.ucsb.cs156.happiercows.errors.NotEnoughMoneyException;
+import edu.ucsb.cs156.happiercows.errors.BuyPositiveException;
+
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +28,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
+
+//import javax.validation.constraints.Min; // added constraint
 
 @Tag(name = "User Commons")
 @RequestMapping("/api/usercommons")
@@ -73,7 +77,11 @@ public class UserCommonsController extends ApiController {
   @PutMapping("/buy")
   public ResponseEntity<String> putUserCommonsByIdBuy(
           @Parameter(name="commonsId") @RequestParam Long commonsId,
-          @Parameter(name="numCows") @RequestParam int numCows) throws NotEnoughMoneyException, JsonProcessingException{
+          @Parameter(name="numCows") @RequestParam int numCows) throws NotEnoughMoneyException, BuyPositiveException, JsonProcessingException{
+
+          if(numCows <= 0){
+            throw new BuyPositiveException("The number of cows you buy must be positive");
+          }
 
         User u = getCurrentUser().getUser();
         Long userId = u.getId();
