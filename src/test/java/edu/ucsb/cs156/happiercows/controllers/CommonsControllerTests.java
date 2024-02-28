@@ -100,6 +100,8 @@ public class CommonsControllerTests extends ControllerTestCase {
     @Test
     public void createCommonsTest() throws Exception {
         LocalDateTime someTime = LocalDateTime.parse("2022-03-05T15:50:10");
+        LocalDateTime endTime = LocalDateTime.parse("2022-05-05T15:50:10"); //new added
+
 
         Commons commons = Commons.builder()
                 .name("Jackson's Commons")
@@ -107,6 +109,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .milkPrice(8.99)
                 .startingBalance(1020.10)
                 .startingDate(someTime)
+                .lastDate(endTime) // new added
                 .degradationRate(50.0)
                 .showLeaderboard(false)
                 .capacityPerUser(10)
@@ -121,6 +124,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .milkPrice(8.99)
                 .startingBalance(1020.10)
                 .startingDate(someTime)
+                .lastDate(endTime) // new added
                 .degradationRate(50.0)
                 .showLeaderboard(false)
                 .capacityPerUser(10)
@@ -315,6 +319,7 @@ public class CommonsControllerTests extends ControllerTestCase {
     @Test
     public void updateCommonsTest() throws Exception {
         LocalDateTime someTime = LocalDateTime.parse("2022-03-05T15:50:10");
+        LocalDateTime endTime = LocalDateTime.parse("2022-05-05T15:50:10"); //new added
 
         CreateCommonsParams parameters = CreateCommonsParams.builder()
                 .name("Jackson's Commons")
@@ -322,6 +327,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .milkPrice(8.99)
                 .startingBalance(1020.10)
                 .startingDate(someTime)
+                .lastDate(endTime)
                 .degradationRate(50.0)
                 .showLeaderboard(true)
                 .capacityPerUser(10)
@@ -336,6 +342,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .milkPrice(8.99)
                 .startingBalance(1020.10)
                 .startingDate(someTime)
+                .lastDate(endTime)
                 .degradationRate(50.0)
                 .showLeaderboard(true)
                 .capacityPerUser(10)
