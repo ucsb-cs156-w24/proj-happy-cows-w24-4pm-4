@@ -10,7 +10,7 @@ import ManageCows from "main/components/Commons/ManageCows";
 import Profits from "main/components/Commons/Profits";
 import { useBackend, useBackendMutation } from "main/utils/useBackend";
 import { useCurrentUser } from "main/utils/currentUser";
-import Background from "../../assets/PlayPageBackground.png";
+import Background from "../../assets/PlayPageBackground.jpg";
 import ChatPanel from "main/components/Chat/ChatPanel";
 import ManageCowsModal from "main/components/Commons/ManageCowsModal";
 
