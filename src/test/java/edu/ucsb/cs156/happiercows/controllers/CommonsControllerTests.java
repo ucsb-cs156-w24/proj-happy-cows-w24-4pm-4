@@ -93,6 +93,7 @@ public class CommonsControllerTests extends ControllerTestCase {
         assertEquals(expectedDefaults.get("capacityPerUser"), actualDefaults.get("capacityPerUser"));
         assertEquals(expectedDefaults.get("aboveCapacityHealthUpdateStrategy"), actualDefaults.get("aboveCapacityHealthUpdateStrategy"));
         assertEquals(expectedDefaults.get("belowCapacityHealthUpdateStrategy"), actualDefaults.get("belowCapacityHealthUpdateStrategy"));
+        assertEquals(true, actualDefaults.get("showChat"));
     }
 
 
@@ -324,6 +325,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(50.0)
                 .showLeaderboard(true)
+                .showChat(true)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant.name())
@@ -338,6 +340,7 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .startingDate(someTime)
                 .degradationRate(50.0)
                 .showLeaderboard(true)
+                .showChat(true)
                 .capacityPerUser(10)
                 .carryingCapacity(100)
                 .aboveCapacityHealthUpdateStrategy(CowHealthUpdateStrategies.Constant)
@@ -364,6 +367,8 @@ public class CommonsControllerTests extends ControllerTestCase {
         commons.setDegradationRate(parameters.getDegradationRate());
         parameters.setShowLeaderboard(false);
         commons.setShowLeaderboard(parameters.getShowLeaderboard());
+        parameters.setShowChat(false);
+        commons.setShowChat(parameters.getShowChat());
         parameters.setCapacityPerUser(12);
         commons.setCapacityPerUser(parameters.getCapacityPerUser());
         parameters.setCarryingCapacity(123);
