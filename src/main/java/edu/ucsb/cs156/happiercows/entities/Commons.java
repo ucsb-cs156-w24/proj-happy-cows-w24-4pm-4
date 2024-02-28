@@ -30,8 +30,8 @@ public class Commons {
     private LocalDateTime startingDate;
     private LocalDateTime lastDate;
     private boolean showLeaderboard;
-    private boolean showChat;
-    
+    @Builder.Default
+    private boolean showChat = true;
     private int capacityPerUser;
     private int carryingCapacity;
     private double degradationRate;

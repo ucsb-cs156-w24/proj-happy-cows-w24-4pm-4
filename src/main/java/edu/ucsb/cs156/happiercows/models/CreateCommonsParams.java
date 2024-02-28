@@ -25,7 +25,7 @@ public class CreateCommonsParams {
     @Builder.Default
     private Boolean showLeaderboard = false;
     @Builder.Default
-    private Boolean showChat = false;
+    private Boolean showChat = true;
     @NumberFormat
     private int capacityPerUser;
     @NumberFormat
