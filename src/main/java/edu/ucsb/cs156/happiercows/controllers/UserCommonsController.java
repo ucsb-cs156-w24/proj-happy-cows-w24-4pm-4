@@ -29,8 +29,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 
-//import javax.validation.constraints.Min; // added constraint
-
 @Tag(name = "User Commons")
 @RequestMapping("/api/usercommons")
 @RestController
