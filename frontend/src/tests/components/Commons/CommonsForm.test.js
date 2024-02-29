@@ -51,6 +51,7 @@ describe("CommonsForm tests", () => {
       /Capacity Per User/,
       /Carrying Capacity/,
       /Show Leaderboard\?/,
+      /Show Chat\?/,
       /When below capacity/,
       /When above capacity/,
 
@@ -138,6 +139,14 @@ describe("CommonsForm tests", () => {
 
     [
       "CommonsForm-showLeaderboard",
+    ].forEach(
+      (testid) => {
+        const element = screen.getByTestId(testid);
+        expect(element).toBeInTheDocument();
+      }
+    );
+    [
+      "CommonsForm-showChat",
     ].forEach(
       (testid) => {
         const element = screen.getByTestId(testid);
