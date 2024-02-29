@@ -57,7 +57,7 @@ describe("PlayPage tests", () => {
                 name: "Sample Commons"
             },
             totalPlayers: 5,
-            totalCows: 5 
+            totalCows: 5
         });
         axiosMock.onGet("/api/profits/all/commonsid").reply(200, []);
         axiosMock.onPut("/api/usercommons/sell").reply(200, userCommons);
@@ -141,7 +141,7 @@ describe("PlayPage tests", () => {
         );
 
         var div = screen.getByTestId("playpage-div");
-        expect(div).toHaveAttribute("style", expect.stringContaining("background-size: cover; background-image: url(PlayPageBackground.png);"));
+        expect(div).toHaveAttribute("style", expect.stringContaining("background-size: cover; background-image: url(PlayPageBackground.jpg);"));
     });
 
     test("Chat toggle button opens and closes the ChatPanel", async () => {
@@ -156,25 +156,25 @@ describe("PlayPage tests", () => {
         await waitFor(() => {
             expect(screen.getByTestId("playpage-chat-toggle")).toBeInTheDocument();
         });
-    
+
         // Make sure the chat toggle button is visible
         const chatToggleButton = screen.getByTestId("playpage-chat-toggle");
         expect(chatToggleButton).toBeInTheDocument();
-        
+
         // Make sure the ChatPanel is not visible initially
         expect(screen.queryByTestId("ChatPanel")).not.toBeInTheDocument();
-    
+
         // Click the chat toggle button to open the ChatPanel
         fireEvent.click(chatToggleButton);
-    
+
         // Wait for the ChatPanel to become visible
         await waitFor(() => {
             expect(screen.getByTestId("ChatPanel")).toBeInTheDocument();
         });
-    
+
         // Click the chat toggle button again to close the ChatPanel
         fireEvent.click(chatToggleButton);
-    
+
         // Wait for the ChatPanel to become hidden
         await waitFor(() => {
             expect(screen.queryByTestId("ChatPanel")).not.toBeInTheDocument();
@@ -197,7 +197,7 @@ describe("PlayPage tests", () => {
         const chatButton = screen.getByTestId("playpage-chat-toggle");
         const chatContainer = screen.getByTestId("playpage-chat-div");
 
-        
+
         expect(chatButton).toHaveTextContent('💬');
         const messageIcon = screen.getByTestId("message-icon");
         expect(messageIcon).toHaveStyle('font-family: Arial, sans-serif;');
