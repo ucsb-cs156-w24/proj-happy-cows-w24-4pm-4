@@ -38,7 +38,6 @@ export default function CommonsTable({ commons, currentUser }) {
         const route = `/leaderboard/${cell.row.values["commons.id"]}`
         navigate(route)
     }
-
     const columns = [
         {
             Header: 'id',
@@ -83,6 +82,11 @@ export default function CommonsTable({ commons, currentUser }) {
             Header:<span> Show <br /> LrdrBrd? </span>,
             id: 'commons.showLeaderboard', // needed for tests
             accessor: (row, _rowIndex) => String(row.commons.showLeaderboard) // hack needed for boolean values to show up
+        },
+        {
+            Header:<span> Show <br /> Chat? </span>,
+            id: 'commons.showChat', // needed for tests
+            accessor: (row, _rowIndex) => String(row.commons.showChat) // hack needed for boolean values to show up
         },
         {
             Header: <span> Tot <br /> Cows </span>,
