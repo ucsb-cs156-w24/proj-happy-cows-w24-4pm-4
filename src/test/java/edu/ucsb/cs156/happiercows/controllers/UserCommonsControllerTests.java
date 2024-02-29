@@ -374,6 +374,51 @@ public class UserCommonsControllerTests extends ControllerTestCase {
         assertEquals(expectedJson, jsonResponse);
     }
 
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void test_BuyCow_negative_cows() throws Exception {
+        // arrange
+        UserCommons origUserCommons = getTestUserCommons();
+        origUserCommons.setNumOfCows(5);
+        origUserCommons.setTotalWealth(500);
+
+        when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L)))
+                .thenReturn(Optional.of(origUserCommons));
+
+        // act
+        MvcResult response = mockMvc.perform(put("/api/usercommons/buy?commonsId=1&numCows=-3")
+                        .with(csrf()))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        // assert
+        String expectedString = "{\"message\":\"The number of cows you buy must be positive\",\"type\":\"BuyPositiveException\"}";
+        Map<String, Object> expectedJson = mapper.readValue(expectedString, Map.class);
+        Map<String, Object> jsonResponse = responseToJson(response);
+        assertEquals(expectedJson, jsonResponse);
+    }
+
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void test_BuyCow_negative_cows_edgeCase() throws Exception {
+        // arrange
+        UserCommons origUserCommons = getTestUserCommons();
+        origUserCommons.setNumOfCows(5);
+        origUserCommons.setTotalWealth(500);
+
+        when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L), eq(1L)))
+                .thenReturn(Optional.of(origUserCommons));
+
+        // act
+        MvcResult response = mockMvc.perform(put("/api/usercommons/buy?commonsId=1&numCows=0")
+                        .with(csrf()))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        // assert
+        String expectedString = "{\"message\":\"The number of cows you buy must be positive\",\"type\":\"BuyPositiveException\"}";
+        Map<String, Object> expectedJson = mapper.readValue(expectedString, Map.class);
+        Map<String, Object> jsonResponse = responseToJson(response);
+        assertEquals(expectedJson, jsonResponse);
+    }
 
     @WithMockUser(roles = {"USER"})
     @Test
