@@ -3,6 +3,7 @@ package edu.ucsb.cs156.happiercows.controllers;
 import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import edu.ucsb.cs156.happiercows.errors.NoCowsException;
 import edu.ucsb.cs156.happiercows.errors.NotEnoughMoneyException;
+import edu.ucsb.cs156.happiercows.errors.BuyPositiveException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.ucsb.cs156.happiercows.models.CurrentUser;
@@ -34,7 +35,7 @@ public abstract class ApiController {
     );
   }
 
-  @ExceptionHandler({ NoCowsException.class, NotEnoughMoneyException.class})
+  @ExceptionHandler({ NoCowsException.class, NotEnoughMoneyException.class, BuyPositiveException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Object handleBadRequest(Throwable e) {
     return Map.of(
@@ -42,4 +43,6 @@ public abstract class ApiController {
       "message", e.getMessage()
     );
   }
+
+  
 }
