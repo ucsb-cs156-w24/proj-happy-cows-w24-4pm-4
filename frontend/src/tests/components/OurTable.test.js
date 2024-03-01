@@ -24,14 +24,15 @@ describe("OurTable tests", () => {
         }
     ];
 
-    const manyRows = Array.from({ length: 11 }, (_, index) => ({
+
+    const pageSize = 10;
+
+    const manyRows = Array.from({ length: pageSize+1 }, (_, index) => ({
         col1: `${index}`,
         col2: 'whatever',
         createdAt: '2023-04-01T23:00:00.000',
         log: "foo\n",
     }))
-
-    const pageSize = 10;
 
     const clickMeCallback = jest.fn();
 
@@ -119,7 +120,10 @@ describe("OurTable tests", () => {
         render(
             <OurTable columns={columns} data={manyRows}/>
         );
-        expect(screen.getByTestId("pagination-ui")).toBeInTheDocument(); 
+        const paginationElem = screen.getByTestId("pagination-ui");
+        expect(paginationElem).toBeInTheDocument(); 
+        expect(paginationElem).toHaveTextContent('<');
+        expect(paginationElem).toHaveTextContent('>');
     });
 
     test("correct data is rendered when next page or previous page buttons is clicked", async () => {
