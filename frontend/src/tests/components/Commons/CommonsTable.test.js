@@ -68,7 +68,7 @@ describe("UserTable tests", () => {
       </QueryClientProvider>
 
     );
-    const expectedHeaders = ["id", "Name", /Cow\s+Price/, /Milk\s+Price/, /Start\s+Bal/, /Starting\s+Date/, /Last\s+Date/, /Degrad\s+Rate/, /Show\s+LrdrBrd\?/, /Tot\s+Cows/, /Cap \/\s+User/, /Carry\s+Cap/, /Eff\s+Cap/];
+    const expectedHeaders = ["id", "Name", /Cow\s+Price/, /Milk\s+Price/, /Start\s+Bal/, /Starting\s+Date/, /Last\s+Date/, /Degrad\s+Rate/, /Show\s+LrdrBrd\?/, /Show\s+Chat\?/, /Tot\s+Cows/, /Cap \/\s+User/, /Carry\s+Cap/, /Eff\s+Cap/];
     const expectedFields = ["id", "name", "cowPrice", "milkPrice", "startingBalance", "startingDate", "lastDate", "degradationRate", "capacityPerUser", "carryingCapacity"];
     
     const testId = "CommonsTable";
@@ -97,12 +97,14 @@ describe("UserTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-1-col-commons.startingDate`)).toHaveTextContent(/^2022-11-22$/); // regex so that we have an exact match https://stackoverflow.com/a/73298371
     expect(screen.getByTestId(`${testId}-cell-row-1-col-commons.lastDate`)).toHaveTextContent(/^2022-11-22$/); 
     expect(screen.getByTestId(`${testId}-cell-row-1-col-commons.showLeaderboard`)).toHaveTextContent("true");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-commons.showChat`)).toHaveTextContent("true");
     expect(screen.getByTestId(`${testId}-cell-row-1-col-totalCows`)).toHaveTextContent("0");
     expect(screen.getByTestId(`${testId}-cell-row-1-col-effectiveCapacity`)).toHaveTextContent("42");
 
     expect(screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`)).toHaveClass("btn-primary");
     expect(screen.getByTestId(`${testId}-cell-row-0-col-Delete-button`)).toHaveClass("btn-danger");
     expect(screen.getByTestId(`${testId}-cell-row-0-col-Leaderboard-button`)).toHaveClass("btn-secondary");
+    // expect(screen.getByTestId(`${testId}-cell-row-0-col-Chat-button`)).toHaveClass("btn-secondary");
     expect(screen.getByTestId(`${testId}-cell-row-0-col-Stats CSV-button`)).toHaveClass("btn-success");
 
   });
