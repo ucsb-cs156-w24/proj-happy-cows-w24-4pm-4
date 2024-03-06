@@ -44,7 +44,7 @@ public class UserCommons {
 
     private int cowDeaths;
 
-    private boolean showChat = false;
+    private boolean showChat;
 
     // userID and commonsId are used by the frontend
     @JsonInclude
