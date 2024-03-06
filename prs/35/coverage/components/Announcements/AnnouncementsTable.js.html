@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for components/Announcements/announcementsTable.js</title>
+    <title>Code coverage report for components/Announcements/AnnouncementsTable.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Announcements</a> announcementsTable.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">components/Announcements</a> AnnouncementsTable.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -131,28 +131,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -169,12 +167,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,17 +187,17 @@ import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/announcemen
 import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 &nbsp;
-export default function announcementsTable({ announcements, currentUser }) {
+export default function <span class="fstat-no" title="function not covered" >AnnouncementsTable(</span>{ announcements, currentUser }) {
 &nbsp;
-    const navigate = useNavigate();
+    const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
 &nbsp;
-    const editCallback = (cell) =&gt; {
-        navigate(`/announcements/edit/${cell.row.values.id}`)
+    const editCallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>ell) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        navigate(`/announcements/edit/${cell.row.values.id}`)</span>
     }
 &nbsp;
     // Stryker disable all : hard to test for query caching
 &nbsp;
-    const deleteMutation = useBackendMutation(
+    const deleteMutation = <span class="cstat-no" title="statement not covered" >useBackendMutation(</span>
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
         ["/api/announcements/all"]
@@ -205,10 +205,10 @@ export default function announcementsTable({ announcements, currentUser }) {
     // Stryker restore all
 &nbsp;
     // Stryker disable next-line all : TODO try to make a good test for this
-    const deleteCallback = async (cell) =&gt; { deleteMutation.mutate(cell); }
+    const deleteCallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (cell) =&gt; { <span class="cstat-no" title="statement not covered" >deleteMutation.mutate(cell); </span>}</span>
 &nbsp;
 &nbsp;
-    const columns = [
+    const columns = <span class="cstat-no" title="statement not covered" >[</span>
         {
             Header: 'id',
             accessor: 'id',
@@ -227,12 +227,12 @@ export default function announcementsTable({ announcements, currentUser }) {
         }
     ];
 &nbsp;
-    if (hasRole(currentUser, "ROLE_ADMIN")) {
-        columns.push(ButtonColumn("Edit", "primary", editCallback, "announcementsTable"));
-        columns.push(ButtonColumn("Delete", "danger", deleteCallback, "announcementsTable"));
+<span class="cstat-no" title="statement not covered" >    if (hasRole(currentUser, "ROLE_ADMIN")) {</span>
+<span class="cstat-no" title="statement not covered" >        columns.push(ButtonColumn("Edit", "primary", editCallback, "announcementsTable"));</span>
+<span class="cstat-no" title="statement not covered" >        columns.push(ButtonColumn("Delete", "danger", deleteCallback, "announcementsTable"));</span>
     }
 &nbsp;
-    return &lt;OurTable
+<span class="cstat-no" title="statement not covered" >    return &lt;OurTable</span>
         data={announcements}
         columns={columns}
         testid={"announcementsTable"}
@@ -244,7 +244,7 @@ export default function announcementsTable({ announcements, currentUser }) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Wed Mar 06 2024 14:53:36 GMT-0800 (Pacific Standard Time)
+                at Wed Mar 06 2024 14:57:28 GMT-0800 (Pacific Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
