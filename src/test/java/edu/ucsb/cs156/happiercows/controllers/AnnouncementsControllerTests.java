@@ -689,9 +689,8 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
         Long userId = 1L;
         String announcement = "test";
         LocalDateTime start = LocalDateTime.parse("2022-03-05T15:50:10");
-        LocalDateTime end = LocalDateTime.parse("2022-03-05T15:50:10");
 
-        Announcements announcements = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(announcement).build();
+        Announcements announcements = Announcements.builder().id(id).commonsId(commonsId).start(start).announcement(announcement).build();
 
         when(announcementsRepository.findById(id)).thenReturn(Optional.of(announcements));
         UserCommons userCommons = UserCommons.builder().build();
@@ -702,8 +701,8 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
         LocalDateTime end2 = LocalDateTime.parse("2022-03-08T15:50:10");
 
         // act 
-        MvcResult response = mockMvc.perform(put("/api/announcements?announcementId={announcementId}&commonsId={commonsId}&start={start}&end={end}&announcement={announcement}", 
-        id, commonsId, start2, end2, announcement2).with(csrf()))
+        MvcResult response = mockMvc.perform(put("/api/announcements?announcementId={announcementId}&commonsId={commonsId}&start={start}&announcement={announcement}", 
+        id, commonsId, start2, announcement2).with(csrf()))
             .andExpect(status().isOk()).andReturn();
 
         verify(announcementsRepository, atLeastOnce()).save(any(Announcements.class));
