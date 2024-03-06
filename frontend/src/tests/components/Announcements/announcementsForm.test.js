@@ -1,5 +1,5 @@
 import { render, waitFor, fireEvent, screen } from "@testing-library/react";
-import AnnouncementsForm from "main/components/Announcements/announcementsForm";
+import AnnouncementsForm from "main/components/Announcements/AnnouncementsForm";
 import { announcementsFixtures } from "fixtures/announcementsFixtures"
 import { BrowserRouter as Router } from "react-router-dom";
 

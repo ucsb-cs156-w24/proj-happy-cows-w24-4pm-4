@@ -1,6 +1,6 @@
 import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import { announcementsFixtures } from "fixtures/announcementsFixtures";
-import AnnouncementsTable from "main/components/Announcements/announcementsTable";
+import AnnouncementsTable from "main/components/Announcements/AnnouncementsTable";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
