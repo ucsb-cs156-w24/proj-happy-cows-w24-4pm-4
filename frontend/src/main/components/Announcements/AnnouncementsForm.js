@@ -2,7 +2,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-function announcementsForm({ initialContents, submitAction, buttonLabel = "Create" }) {
+function AnnouncementsForm({ initialContents, submitAction, buttonLabel = "Create" }) {
 
     // Stryker disable all
     const {
@@ -118,4 +118,4 @@ function announcementsForm({ initialContents, submitAction, buttonLabel = "Creat
     )
 }
 
-export default announcementsForm;
+export default AnnouncementsForm;

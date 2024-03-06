@@ -6,7 +6,7 @@ import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/announcemen
 import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 
-export default function announcementsTable({ announcements, currentUser }) {
+export default function AnnouncementsTable({ announcements, currentUser }) {
 
     const navigate = useNavigate();
 
