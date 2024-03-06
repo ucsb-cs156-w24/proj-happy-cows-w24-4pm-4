@@ -3,8 +3,8 @@ import AnnouncementsForm from 'main/components/Announcements/AnnouncementsForm';
 import { announcementFixtures } from 'fixtures/announcementsFixtures';
 
 export default {
-    title: 'components/Announcements/announcementsForm',
-    component: announcementsForm
+    title: 'components/Announcements/AnnouncementsForm',
+    component: AnnouncementsForm
 };
 
 
