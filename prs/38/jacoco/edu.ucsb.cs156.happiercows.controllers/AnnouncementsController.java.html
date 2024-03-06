@@ -210,7 +210,7 @@ import java.time.LocalDateTime;
         }
 
         // Ensure start date is before end date
-<span class="pc bpc" id="L213" title="1 of 2 branches missed.">        if (end != null) {</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (end != null) {</span>
 <span class="fc bfc" id="L214" title="All 2 branches covered.">            if (end.isBefore(start)) {</span>
 <span class="fc" id="L215">                return ResponseEntity.badRequest().body(&quot;End time must be after start time&quot;);</span>
             }
