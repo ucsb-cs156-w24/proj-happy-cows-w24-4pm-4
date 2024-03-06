@@ -52,7 +52,7 @@ function AnnouncementsForm({ initialContents, submitAction, buttonLabel = "Creat
                             id="start"
                             type="text"
                             isInvalid={Boolean(errors.start)}
-                            {...register("start", { required: true, pattern: { value: isodate_regex, message: 'Start must be provided in ISO format.' }})}
+                            {...register("start", { required: true, pattern: isodate_regex})}
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.start && 'Start is required. '}
@@ -69,7 +69,7 @@ function AnnouncementsForm({ initialContents, submitAction, buttonLabel = "Creat
                             id="end"
                             type="text"
                             isInvalid={Boolean(errors.end)}
-                            {...register("end", { pattern: { value: isodate_regex, message: 'End must be provided in ISO format.'} })}
+                            {...register("end", { pattern: isodate_regex})}
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.end?.type === 'pattern' && 'End must be provided in ISO format.'}
