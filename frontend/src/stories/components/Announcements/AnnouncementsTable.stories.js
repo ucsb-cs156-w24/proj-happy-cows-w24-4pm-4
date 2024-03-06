@@ -2,16 +2,16 @@ import React from 'react';
 import { announcementsFixtures } from 'fixtures/announcementsFixtures'
 import { currentUserFixtures } from 'fixtures/currentUserFixtures';
 import { rest } from "msw";
-import announcementsTable from 'main/components/Announcements/announcementsTable';
+import AnnouncementsTable from 'main/components/Announcements/AnnouncementsTable';
 
 export default {
-    title: 'components/Announcements/announcementsTable',
-    component: announcementsTable
+    title: 'components/Announcements/AnnouncementsTable',
+    component: AnnouncementsTable
 };
 
 const Template = (args) => {
     return (
-        <announcementsTable {...args} />
+        <AnnouncementsTable {...args} />
     )
 };
 

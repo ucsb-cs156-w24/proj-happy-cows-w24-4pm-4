@@ -1,5 +1,5 @@
 import React from 'react';
-import announcementsForm from 'main/components/Announcements/announcementsForm';
+import AnnouncementsForm from 'main/components/Announcements/AnnouncementsForm';
 import { announcementFixtures } from 'fixtures/announcementsFixtures';
 
 export default {
@@ -10,7 +10,7 @@ export default {
 
 const Template = (args) => {
     return (
-        <announcementsForm {...args} />
+        <AnnouncementsForm {...args} />
     )
 };
 
