@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -131,28 +131,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -169,12 +167,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,17 +187,17 @@ import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/announcemen
 import { useNavigate } from "react-router-dom";
 import { hasRole } from "main/utils/currentUser";
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >announcementsTable(</span>{ announcements, currentUser }) {
+export default function announcementsTable({ announcements, currentUser }) {
 &nbsp;
-    const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
+    const navigate = useNavigate();
 &nbsp;
-    const editCallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>ell) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        navigate(`/announcements/edit/${cell.row.values.id}`)</span>
+    const editCallback = (cell) =&gt; {
+        navigate(`/announcements/edit/${cell.row.values.id}`)
     }
 &nbsp;
     // Stryker disable all : hard to test for query caching
 &nbsp;
-    const deleteMutation = <span class="cstat-no" title="statement not covered" >useBackendMutation(</span>
+    const deleteMutation = useBackendMutation(
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
         ["/api/announcements/all"]
@@ -205,34 +205,34 @@ export default function <span class="fstat-no" title="function not covered" >ann
     // Stryker restore all
 &nbsp;
     // Stryker disable next-line all : TODO try to make a good test for this
-    const deleteCallback = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (cell) =&gt; { <span class="cstat-no" title="statement not covered" >deleteMutation.mutate(cell); </span>}</span>
+    const deleteCallback = async (cell) =&gt; { deleteMutation.mutate(cell); }
 &nbsp;
 &nbsp;
-    const columns = <span class="cstat-no" title="statement not covered" >[</span>
+    const columns = [
         {
             Header: 'id',
             accessor: 'id',
         },
         {
-            Header: 'start',
+            Header: 'Start',
             accessor: 'start',
         },
         {
-            Header: 'end',
+            Header: 'End',
             accessor: 'end',
         },
         {
-            Header: 'announcement',
+            Header: 'Announcement',
             accessor: 'announcement',
         }
     ];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (hasRole(currentUser, "ROLE_ADMIN")) {</span>
-<span class="cstat-no" title="statement not covered" >        columns.push(ButtonColumn("Edit", "primary", editCallback, "announcementsTable"));</span>
-<span class="cstat-no" title="statement not covered" >        columns.push(ButtonColumn("Delete", "danger", deleteCallback, "announcementsTable"));</span>
+    if (hasRole(currentUser, "ROLE_ADMIN")) {
+        columns.push(ButtonColumn("Edit", "primary", editCallback, "announcementsTable"));
+        columns.push(ButtonColumn("Delete", "danger", deleteCallback, "announcementsTable"));
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return &lt;OurTable</span>
+    return &lt;OurTable
         data={announcements}
         columns={columns}
         testid={"announcementsTable"}
@@ -244,7 +244,7 @@ export default function <span class="fstat-no" title="function not covered" >ann
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue Mar 05 2024 17:28:43 GMT-0800 (Pacific Standard Time)
+                at Wed Mar 06 2024 14:53:36 GMT-0800 (Pacific Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
