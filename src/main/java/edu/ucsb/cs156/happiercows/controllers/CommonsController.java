@@ -17,13 +17,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import edu.ucsb.cs156.happiercows.services.CommonsPlusBuilderService;
-
 
 import java.util.Optional;
 
@@ -289,6 +289,17 @@ public class CommonsController extends ApiController {
             // user is already a member of this commons
             String body = mapper.writeValueAsString(joinedCommons);
             return ResponseEntity.ok().body(body);
+        }
+
+        if (joinedCommons.gameInProgress() == false){
+            /*
+            String body = mapper.writeValueAsString(joinedCommons);
+            return ResponseEntity.ok().body(body);
+            */
+            
+            String responseString = String.format("Cannot join commons with id %d. Commons has not started yet." , joinedCommons.getId());
+            //throw new IllegalArgumentException(responseString);
+            return ResponseEntity.ok().body(responseString);
         }
 
         UserCommons uc = UserCommons.builder()
