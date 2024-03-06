@@ -59,8 +59,8 @@ describe("Announcements tests", () => {
         fireEvent.click(submitButton);
 
         await screen.findByText(/Start is required./);
-        //expect(screen.getByText(/Start must be provided in ISO format./)).toBeInTheDocument();
-        //expect(screen.getByText(/End must be provided in ISO format./)).toBeInTheDocument();
+        expect(screen.getByText(/Start must be provided in ISO format./)).toBeInTheDocument();
+        expect(screen.getByText(/End must be provided in ISO format./)).toBeInTheDocument();
     });
 
     test("Correct Error messsages on missing input", async () => {
@@ -105,8 +105,8 @@ describe("Announcements tests", () => {
         await waitFor(() => expect(mockSubmitAction).toHaveBeenCalled());
 
         expect(screen.queryByText(/Start is required. /)).not.toBeInTheDocument();
-        //expect(screen.queryByText(/Start must be provided in ISO format./)).not.toBeInTheDocument();
-        //expect(screen.queryByText(/End must be provided in ISO format./)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Start must be provided in ISO format./)).not.toBeInTheDocument();
+        expect(screen.queryByText(/End must be provided in ISO format./)).not.toBeInTheDocument();
 
     });
 
