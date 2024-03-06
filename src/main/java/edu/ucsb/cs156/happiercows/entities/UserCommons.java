@@ -44,6 +44,8 @@ public class UserCommons {
 
     private int cowDeaths;
 
+    private boolean showChat = false;
+
     // userID and commonsId are used by the frontend
     @JsonInclude
     public long getUserId() {
@@ -62,4 +64,13 @@ public class UserCommons {
     public UserCommonsKey getId() {
         return this.id;
     }
+
+    public boolean isShowChat() {
+        return showChat;
+    }
+
+    public void setShowChat(boolean showChat) {
+        this.showChat = showChat;
+    }
+
 }

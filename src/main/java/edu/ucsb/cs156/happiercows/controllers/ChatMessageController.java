@@ -51,13 +51,15 @@ public class ChatMessageController extends ApiController{
         
         // Make sure the user is part of the commons or is an admin
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
+        boolean isAdmin = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (!isAdmin) {
             log.info("User is not an admin");
             User user = getCurrentUser().getUser();
             Long userId = user.getId();
             Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
-
-            if (!userCommonsLookup.isPresent()) {
+    
+            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().isShowChat()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         }
