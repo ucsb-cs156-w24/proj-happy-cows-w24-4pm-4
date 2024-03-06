@@ -52,10 +52,11 @@ function announcementsForm({ initialContents, submitAction, buttonLabel = "Creat
                             id="start"
                             type="datetime-local"
                             isInvalid={Boolean(errors.start)}
-                            {...register("start", { required: true, pattern: isodate_regex })}
+                            {...register("start", { required: true, pattern: { value: isodate_regex, message: 'Start must be provided in ISO format.' }})}
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.start && 'Start is required. '}
+
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
@@ -67,10 +68,9 @@ function announcementsForm({ initialContents, submitAction, buttonLabel = "Creat
                             id="end"
                             type="datetime-local"
                             isInvalid={Boolean(errors.end)}
-                            {...register("localDateTime", { pattern: isodate_regex })}
+                            {...register("end", { pattern: { value: isodate_regex, message: 'End must be provided in ISO format.'} })}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.end?.message}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>
@@ -81,7 +81,7 @@ function announcementsForm({ initialContents, submitAction, buttonLabel = "Creat
                     <Form.Group className="mb-3" >
                         <Form.Label htmlFor="announcement">Announcement</Form.Label>
                         <Form.Control
-                            data-testid="announcementForm-announcement"
+                            data-testid="announcementsForm-announcement"
                             id="announcement"
                             type="text"
                             isInvalid={Boolean(errors.announcement)}
@@ -100,14 +100,14 @@ function announcementsForm({ initialContents, submitAction, buttonLabel = "Creat
                 <Col>
                     <Button
                         type="submit"
-                        data-testid="announcementForm-submit"
+                        data-testid="announcementsForm-submit"
                     >
                         {buttonLabel}
                     </Button>
                     <Button
                         variant="Secondary"
                         onClick={() => navigate(-1)}
-                        data-testid="announcementForm-cancel"
+                        data-testid="announcementsForm-cancel"
                     >
                         Cancel
                     </Button>

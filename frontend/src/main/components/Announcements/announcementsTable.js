@@ -33,15 +33,15 @@ export default function announcementsTable({ announcements, currentUser }) {
             accessor: 'id',
         },
         {
-            Header: 'start',
+            Header: 'Start',
             accessor: 'start',
         },
         {
-            Header: 'end',
+            Header: 'End',
             accessor: 'end',
         },
         {
-            Header: 'announcement',
+            Header: 'Announcement',
             accessor: 'announcement',
         }
     ];
