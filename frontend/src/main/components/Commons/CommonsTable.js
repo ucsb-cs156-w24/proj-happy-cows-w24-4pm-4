@@ -38,7 +38,6 @@ export default function CommonsTable({ commons, currentUser }) {
         const route = `/leaderboard/${cell.row.values["commons.id"]}`
         navigate(route)
     }
-
     const columns = [
         {
             Header: 'id',
