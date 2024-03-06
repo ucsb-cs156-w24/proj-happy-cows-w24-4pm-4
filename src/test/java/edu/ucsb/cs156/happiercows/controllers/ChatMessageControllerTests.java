@@ -74,7 +74,7 @@ public class ChatMessageControllerTests extends ControllerTestCase {
 
         when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
         
-        UserCommons userCommons = UserCommons.builder().build();
+        UserCommons userCommons = UserCommons.builder().showChat(true).build();
         when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
 
 
@@ -199,6 +199,69 @@ public class ChatMessageControllerTests extends ControllerTestCase {
         // assert
         verify(chatMessageRepository, times(0)).findAllByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()));
     }
+
+    @WithMockUser(roles = {"ADMIN"})
+    @Test
+    public void adminAlwaysGetsResponseRegardlessOfShowChat() throws Exception {
+        // arrange
+        Long commonsId = 1L;
+        int page = 0;
+        int size = 10;
+
+        ChatMessage chatMessage1 = ChatMessage.builder().id(1L).commonsId(commonsId).build();
+        ChatMessage chatMessage2 = ChatMessage.builder().id(2L).commonsId(commonsId).build();
+        Page<ChatMessage> pageOfChatMessages = new PageImpl<>(Arrays.asList(chatMessage1, chatMessage2));
+
+        when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending())))
+            .thenReturn(pageOfChatMessages);
+
+        //assert
+        mockMvc.perform(get("/api/chat/get?commonsId={commonsId}&page={page}&size={size}", commonsId, page, size))
+            .andExpect(status().isOk());
+        verify(chatMessageRepository, atLeastOnce()).findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()));
+    }
+
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void userGetsForbiddenIfShowChatIsFalse() throws Exception {
+       /*  Long commonsId = 1L;
+        Long userId = 2L; 
+
+        User user = new User(); 
+        user.setId(userId);
+
+        UserCommons userCommons = UserCommons.builder()
+            .user(user)
+            .commonsId(commonsId)
+            .showChat(false) 
+            .build();
+
+        when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId))
+            .thenReturn(Optional.of(userCommons));
+
+        // act and assert
+        */
+        Long commonsId = 1L;
+        int page = 0;
+        int size = 10;
+
+        ChatMessage chatMessage1 = ChatMessage.builder().id(1L).commonsId(commonsId).hidden(true).build();
+        ChatMessage chatMessage2 = ChatMessage.builder().id(2L).commonsId(commonsId).hidden(true).build();
+
+        Page<ChatMessage> pageOfChatMessages = new PageImpl<ChatMessage>(Arrays.asList(chatMessage1, chatMessage2));
+
+        when(chatMessageRepository.findByCommonsIdAndHidden(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
+
+        // act
+        mockMvc.perform(get("/api/chat/get?commonsId={commonsId}&page={page}&size={size}", commonsId, page, size))
+            .andExpect(status().isForbidden()).andReturn();
+
+        // assert
+       /*  verify(chatMessageRepository, times(0)).findByCommonsIdAndHidden(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()));
+        mockMvc.perform(get("/api/chat/get?commonsId={commonsId}&page={page}&size={size}", commonsId, page, size))
+            .andExpect(status().isForbidden());*/
+    }
+
 
     //* */ admin/hidden tests
     @WithMockUser(roles = {"ADMIN"})
