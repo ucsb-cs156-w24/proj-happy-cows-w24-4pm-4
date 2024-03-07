@@ -108,7 +108,7 @@ import java.util.Optional;
 <span class="fc" id="L108">            log.info(&quot;User is not an admin&quot;);</span>
 <span class="fc" id="L109">            Optional&lt;UserCommons&gt; userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);</span>
 
-<span class="pc bpc" id="L111" title="1 of 4 branches missed.">            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {</span>
+<span class="fc bfc" id="L111" title="All 4 branches covered.">            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {</span>
 <span class="fc" id="L112">                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();</span>
             }
         }
@@ -152,21 +152,15 @@ import java.util.Optional;
 <span class="fc bfc" id="L152" title="All 2 branches covered.">            if (chatMessage.getUserId() != userId) {</span>
 <span class="fc" id="L153">                log.info(&quot;user is not author of the message&quot;);</span>
 <span class="fc" id="L154">                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();</span>
-            }
-
-<span class="fc" id="L157">            Optional&lt;UserCommons&gt; userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(chatMessage.getCommonsId(), userId);</span>
-<span class="pc bpc" id="L158" title="2 of 4 branches missed.">            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {</span>
-<span class="nc" id="L159">                log.info(&quot;showChat is false&quot;);</span>
-<span class="nc" id="L160">                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();</span>
-            }           
+            }   
         }
 
         // Admin can hide any message by id
         // Hide the message
-<span class="fc" id="L166">        chatMessage.setHidden(true);</span>
-<span class="fc" id="L167">        chatMessageRepository.save(chatMessage);</span>
+<span class="fc" id="L160">        chatMessage.setHidden(true);</span>
+<span class="fc" id="L161">        chatMessageRepository.save(chatMessage);</span>
 
-<span class="fc" id="L169">        return ResponseEntity.ok(chatMessage);</span>
+<span class="fc" id="L163">        return ResponseEntity.ok(chatMessage);</span>
     }
 
     
