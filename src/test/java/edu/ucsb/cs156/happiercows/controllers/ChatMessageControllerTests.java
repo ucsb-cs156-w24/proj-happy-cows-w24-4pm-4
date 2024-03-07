@@ -461,9 +461,14 @@ public class ChatMessageControllerTests extends ControllerTestCase {
         
         // arrange
         Long messageId = 0L;
+        Long otheruserId = 2L;
 
-        ChatMessage chatMessage = ChatMessage.builder().id(messageId).userId(2L).build();
+        ChatMessage chatMessage = ChatMessage.builder().id(messageId).userId(otheruserId).build();
         when(chatMessageRepository.findById(messageId)).thenReturn(Optional.of(chatMessage));
+
+        UserCommons userCommons = mock(UserCommons.class);
+        when(userCommonsRepository.findByCommonsIdAndUserId(chatMessage.getCommonsId(), otheruserId+1)).thenReturn(Optional.of(userCommons));
+        when(userCommons.getCommonsShowChat()).thenReturn(true);
 
         //act 
         mockMvc.perform(put("/api/chat/hide?chatMessageId={messageId}", messageId).with(csrf()))

@@ -147,17 +147,18 @@ public class ChatMessageController extends ApiController{
             User user = getCurrentUser().getUser();
             Long userId = user.getId();
 
-            Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(chatMessage.getCommonsId(), userId);
-            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {
-                log.info("showChat is false");
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }           
-            
+
             // Check if the user is the author of the message
             if (chatMessage.getUserId() != userId) {
                 log.info("user is not author of the message");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
+
+            Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(chatMessage.getCommonsId(), userId);
+            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {
+                log.info("showChat is false");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }           
         }
 
         // Admin can hide any message by id
