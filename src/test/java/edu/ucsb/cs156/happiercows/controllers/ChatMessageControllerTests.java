@@ -225,6 +225,7 @@ public class ChatMessageControllerTests extends ControllerTestCase {
     @Test
     public void userGetsForbiddenIfShowChatIsFalse() throws Exception {
         Long commonsId = 1L;
+        Long userId = 1L;
         int page = 0;
         int size = 10;
 
