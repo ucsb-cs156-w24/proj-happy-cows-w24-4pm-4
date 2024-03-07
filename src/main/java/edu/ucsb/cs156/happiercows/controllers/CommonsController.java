@@ -298,6 +298,8 @@ public class CommonsController extends ApiController {
             */
             
             String responseString = String.format("Cannot join commons with id %d. Commons has not started yet." , joinedCommons.getId());
+            responseString += " It starts on ";
+            responseString += joinedCommons.getStartingDate().toString();
             //throw new IllegalArgumentException(responseString);
             return ResponseEntity.ok().body(responseString);
         }
