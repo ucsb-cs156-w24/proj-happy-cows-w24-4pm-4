@@ -42,6 +42,21 @@ Sample.args = {
     ]
 };
 
-
-
+export const ThreePages = Template.bind({});
+ThreePages.args = {
+    columns: [
+        {
+            Header: 'Column 1',
+            accessor: 'col1', // accessor is the "key" in the data
+        },
+        {
+            Header: 'Column 2',
+            accessor: 'col2',
+        },
+    ],
+    data: Array.from({ length: 26 }, (_, index) => ({
+        col1: `${index}`,
+        col2: 'whatever',
+    }))
+};
 
