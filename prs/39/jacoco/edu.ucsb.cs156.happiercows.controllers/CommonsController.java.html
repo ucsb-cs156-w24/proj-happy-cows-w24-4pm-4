@@ -291,17 +291,17 @@ import java.util.Optional;
 <span class="fc" id="L291">            return ResponseEntity.ok().body(body);</span>
         }
 
-<span class="pc bpc" id="L294" title="1 of 2 branches missed.">        if (joinedCommons.gameInProgress() == false){</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">        if (joinedCommons.gameInProgress() == false){</span>
             /*
             String body = mapper.writeValueAsString(joinedCommons);
             return ResponseEntity.ok().body(body);
             */
             
-<span class="nc" id="L300">            String responseString = String.format(&quot;Cannot join commons with id %d. Commons has not started yet.&quot; , joinedCommons.getId());</span>
-<span class="nc" id="L301">            responseString += &quot; It starts on &quot;;</span>
-<span class="nc" id="L302">            responseString += joinedCommons.getStartingDate().toString();</span>
+<span class="fc" id="L300">            String responseString = String.format(&quot;Cannot join commons with id %d. Commons has not started yet.&quot; , joinedCommons.getId());</span>
+<span class="fc" id="L301">            responseString += &quot; It starts on &quot;;</span>
+<span class="fc" id="L302">            responseString += joinedCommons.getStartingDate().toString();</span>
             //throw new IllegalArgumentException(responseString);
-<span class="nc" id="L304">            return ResponseEntity.ok().body(responseString);</span>
+<span class="fc" id="L304">            return ResponseEntity.ok().body(responseString);</span>
         }
 
 <span class="fc" id="L307">        UserCommons uc = UserCommons.builder()</span>
