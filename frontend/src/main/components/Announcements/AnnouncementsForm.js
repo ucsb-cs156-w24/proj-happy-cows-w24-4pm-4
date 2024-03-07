@@ -86,7 +86,7 @@ function AnnouncementsForm({ initialContents, submitAction, buttonLabel = "Creat
                         <Form.Control
                             data-testid="announcementsForm-announcement"
                             id="announcement"
-                            type="text"
+                            type="textarea"
                             isInvalid={Boolean(errors.announcement)}
                             {...register("announcement", {
                                 required: "Announcement is required."
