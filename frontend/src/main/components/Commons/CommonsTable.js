@@ -57,7 +57,7 @@ export default function CommonsTable({ commons, currentUser }) {
         {
             Header:<span> Milk <br /> Price </span>,
             accessor: row => row.commons.milkPrice,
-            id: 'commons.milkPrice' 
+            id: 'commons.milkPrice'
         },
         {
             Header:<span> Start <br /> Bal </span>,
@@ -112,6 +112,7 @@ export default function CommonsTable({ commons, currentUser }) {
         ButtonColumn("Delete", "danger", deleteCallback, testid),
         ButtonColumn("Leaderboard", "secondary", leaderboardCallback, testid),
         HrefButtonColumn("Stats CSV", "success", `/api/commonstats/download?commonsId=`, testid),
+        HrefButtonColumn("Announcements", "secondary", `/admin/announcements/`, testid)
     ];
 
     const columnsToDisplay = hasRole(currentUser,"ROLE_ADMIN") ? columnsIfAdmin : columns;
@@ -122,7 +123,7 @@ export default function CommonsTable({ commons, currentUser }) {
                 <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                Are you sure you want to delete this commons?            
+                Are you sure you want to delete this commons?
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" data-testid="CommonsTable-Modal-Cancel" onClick={() => setShowModal(false)}>

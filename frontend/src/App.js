@@ -20,6 +20,9 @@ import PlayPage from "main/pages/PlayPage";
 import NotFoundPage from "main/pages/NotFoundPage";
 import AdminViewPlayPage from "main/pages/AdminViewPlayPage";
 
+import AnnouncementsIndexPage from "main/pages/AnnouncementsIndexPage";
+
+
 function App() {
     const { data: currentUser } = useCurrentUser();
 
@@ -48,6 +51,10 @@ function App() {
                 path="/admin/play/:commonsId/user/:userId"
                 element={<AdminViewPlayPage />}
             />
+            <Route
+                path="/admin/announcements/:commonsId"
+                element={<AnnouncementsIndexPage />}
+            />
         </>
     ) : null;
 
@@ -70,7 +77,7 @@ function App() {
             <Route path="/" element={<LoginPage />} />
         );
 
-    /*  Display the LoadingPage while awaiting currentUser 
+    /*  Display the LoadingPage while awaiting currentUser
       response to prevent the NotFoundPage from displaying */
     const updateLastOnlineMutation = useBackendMutation(
         () => ({ method: "POST", url: "/api/currentUser/last-online" }),
