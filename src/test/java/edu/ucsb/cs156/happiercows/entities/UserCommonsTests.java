@@ -45,4 +45,23 @@ public class UserCommonsTests {
         assertEquals(newUserCommonsKey, userCommons.getId());
 
     }
+
+    @Test
+    void userCommons_getCommonsShowChat() {
+        var userCommons = UserCommons.builder()
+                .commons(Commons.builder().showChat(true).build())
+                .user(User.builder().build())
+                .cowHealth(50)
+                .totalWealth(100)
+                .build();
+        assertEquals(true, userCommons.getCommonsShowChat());
+        userCommons = UserCommons.builder()
+                .commons(Commons.builder().showChat(false).build())
+                .user(User.builder().build())
+                .cowHealth(50)
+                .totalWealth(100)
+                .build();
+        assertEquals(false, userCommons.getCommonsShowChat());
+
+    }
 }
