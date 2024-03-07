@@ -24,7 +24,7 @@ Empty.args = {
 export const ThreeItemsOrdinaryUser = Template.bind({});
 
 ThreeItemsOrdinaryUser.args = {
-    announcemenets: announcementsFixtures.threeAnnouncements,
+    announcements: announcementsFixtures.threeAnnouncements,
     currentUser: currentUserFixtures.userOnly,
 };
 

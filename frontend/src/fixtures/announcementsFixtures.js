@@ -1,4 +1,4 @@
-export const announcementsFixtures = {
+const announcementsFixtures = {
     oneAnnouncement:{
         "id": 1,
         "commonsId": 1,
@@ -30,4 +30,6 @@ export const announcementsFixtures = {
             "announcement": "hello world - 3"
         }
     ],
-}
+};
+
+export { announcementsFixtures};
