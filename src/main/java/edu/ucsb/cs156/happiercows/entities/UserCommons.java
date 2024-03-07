@@ -57,7 +57,6 @@ public class UserCommons {
 
     @JsonInclude
     public boolean getCommonsShowChat() {
-        if (commons==null) return true;
         return commons.getShowChat();
     }
 
