@@ -23,6 +23,17 @@ describe("OurTable tests", () => {
             log: "bar\n  baz",
         }
     ];
+
+
+    const pageSize = 10;
+
+    const manyRows = Array.from({ length: pageSize+1 }, (_, index) => ({
+        col1: `${index}`,
+        col2: 'whatever',
+        createdAt: '2023-04-01T23:00:00.000',
+        log: "foo\n",
+    }))
+
     const clickMeCallback = jest.fn();
 
     const columns = [
@@ -45,7 +56,7 @@ describe("OurTable tests", () => {
         );
     });
 
-    test("renders a table with two rows without crashing", () => {
+    test("renders a table with three rows without crashing", () => {
         render(
             <OurTable columns={columns} data={threeRows} />
         );
@@ -88,5 +99,46 @@ describe("OurTable tests", () => {
 
         fireEvent.click(col1Header);
         expect(await screen.findByText("🔽")).toBeInTheDocument();
+    });
+
+    test("pagination ui should not be visible when the number of rows of data is less than or equal to the default page size", async () => {
+        render(
+            <OurTable columns={columns} data={threeRows} testid={"sampleTestId"}/>
+        );
+        expect(screen.getByTestId(`sampleTestId-cell-row-${threeRows.length-1}-col-col1`)).toBeInTheDocument(); //confirm the last row is in the table
+        expect(screen.queryByTestId("pagination-ui")).not.toBeInTheDocument(); 
+
+        const data = manyRows.slice(0, pageSize);
+        render(
+            <OurTable columns={columns} data={data} testid={"sampleTestId"}/>
+        );
+        expect(screen.getByTestId(`sampleTestId-cell-row-${data.length-1}-col-col1`)).toBeInTheDocument(); //confirm the last row is in the table
+        expect(screen.queryByTestId("pagination-ui")).not.toBeInTheDocument(); 
+    });
+
+    test("pagination ui should be visible when the number of rows of data is more than the default page size", async () => {
+        render(
+            <OurTable columns={columns} data={manyRows}/>
+        );
+        const paginationElem = screen.getByTestId("pagination-ui");
+        expect(paginationElem).toBeInTheDocument(); 
+        expect(paginationElem).toHaveTextContent('<');
+        expect(paginationElem).toHaveTextContent('>');
+    });
+
+    test("correct data is rendered when next page or previous page buttons is clicked", async () => {
+        render(
+            <OurTable columns={columns} data={manyRows} testid={"sampleTestId"}/>
+        );
+        expect(await screen.findByTestId("page-indicator")).toHaveTextContent("Page 1 of 2"); // confirm current page number
+        expect(screen.getByTestId(`sampleTestId-cell-row-${pageSize-1}-col-col1`)).toBeInTheDocument();
+        fireEvent.click(screen.getByTestId("goto-next-page-button"));
+        expect(await screen.findByTestId("page-indicator")).toHaveTextContent("Page 2 of 2"); 
+        expect(screen.getByTestId(`sampleTestId-cell-row-${pageSize}-col-col1`)).toBeInTheDocument(); // confirm element in the next page is displayed
+        expect(screen.queryByTestId(`sampleTestId-cell-row-${pageSize-1}-col-col1`)).not.toBeInTheDocument(); // confirm element from previousd page is not displayed
+        fireEvent.click(screen.getByTestId("goto-previous-page-button")); // check go to previous page button
+        expect(await screen.findByTestId("page-indicator")).toHaveTextContent("Page 1 of 2"); 
+        expect(screen.queryByTestId(`sampleTestId-cell-row-${pageSize}-col-col1`)).not.toBeInTheDocument();
+        expect(screen.getByTestId(`sampleTestId-cell-row-${pageSize-1}-col-col1`)).toBeInTheDocument(); 
     });
 });
