@@ -74,10 +74,10 @@ public class ChatMessageControllerTests extends ControllerTestCase {
         Page<ChatMessage> pageOfChatMessages = new PageImpl<ChatMessage>(Arrays.asList(chatMessage1, chatMessage2));
 
         when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
-        
-        UserCommons userCommons = UserCommons.builder().build();
-        when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
 
+        UserCommons userCommons = mock(UserCommons.class);
+        when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
+        when(userCommons.getCommonsShowChat()).thenReturn(true);
 
         // act
         MvcResult response = mockMvc.perform(get("/api/chat/get?commonsId={commonsId}&page={page}&size={size}", commonsId, page, size))
@@ -318,8 +318,9 @@ public class ChatMessageControllerTests extends ControllerTestCase {
 
         when(chatMessageRepository.save(any(ChatMessage.class))).thenReturn(chatMessage);
         
-        UserCommons userCommons = UserCommons.builder().build();
+        UserCommons userCommons = mock(UserCommons.class);
         when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
+        when(userCommons.getCommonsShowChat()).thenReturn(true);
 
         //act 
         MvcResult response = mockMvc.perform(post("/api/chat/post?commonsId={commonsId}&content={content}", commonsId, content).with(csrf()))
