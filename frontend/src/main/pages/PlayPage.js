@@ -121,13 +121,6 @@ export default function PlayPage() {
         mutationsell.mutate(userCommons, numCows);
     };
 
-    /*const isAdmin = currentUser?.roles?.includes('ROLE_ADMIN');
-    const canShowChat = isAdmin || commonsPlus?.showChat;
-
-    console.log("Is Admin:", isAdmin);
-    console.log("Show Chat (from commonsPlus):", commonsPlus?.showChat);
-    console.log("Can Show Chat:", canShowChat);*/
-
     const [isChatOpen, setIsChatOpen] = useState(false);
 
     const toggleChatWindow = () => {
