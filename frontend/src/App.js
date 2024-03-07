@@ -21,6 +21,7 @@ import NotFoundPage from "main/pages/NotFoundPage";
 import AdminViewPlayPage from "main/pages/AdminViewPlayPage";
 
 import AnnouncementsIndexPage from "main/pages/AnnouncementsIndexPage";
+import AnnouncementsCreatePage from "main/pages/AnnouncementsCreatePage";
 
 
 function App() {
@@ -54,6 +55,10 @@ function App() {
             <Route
                 path="/admin/announcements/:commonsId"
                 element={<AnnouncementsIndexPage />}
+            />
+            <Route
+                path="/admin/announcements/:commonsId/create"
+                element={<AnnouncementsCreatePage />}
             />
         </>
     ) : null;

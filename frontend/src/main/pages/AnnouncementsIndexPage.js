@@ -10,13 +10,15 @@ import { useCurrentUser , hasRole} from 'main/utils/currentUser';
 export default function AnnouncementsIndexPage() {
 
   const currentUser = useCurrentUser();
+  //const commonsId = ;
+  //const commonsName =;
 
   const createButton = () => {
     if (hasRole(currentUser, "ROLE_ADMIN")) {
         return (
             <Button
                 variant="primary"
-                href="/announcements/create"
+                href="/admin/announcements/:commonsId/create"
                 style={{ float: "right" }}
             >
                 Create Announcement
@@ -28,8 +30,8 @@ export default function AnnouncementsIndexPage() {
   const { data: announcements, error: _error, status: _status } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
-      ["/api/announcements/all"],
-      { method: "GET", url: "/api/announcements/all" },
+      [`api/announcements/:commonsId/all`],
+      { method: "GET", url: `/api/announcements/:commonsId/all` },
       // Stryker disable next-line all : don't test default value of empty list
       []
     );

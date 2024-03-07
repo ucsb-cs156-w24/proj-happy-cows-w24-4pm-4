@@ -39,6 +39,7 @@ export default function CommonsTable({ commons, currentUser }) {
         navigate(route)
     }
 
+
     const columns = [
         {
             Header: 'id',
