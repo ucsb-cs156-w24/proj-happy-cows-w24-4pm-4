@@ -2,6 +2,7 @@ package edu.ucsb.cs156.happiercows.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,7 +35,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import edu.ucsb.cs156.happiercows.ControllerTestCase;
 import edu.ucsb.cs156.happiercows.repositories.ChatMessageRepository;
 import edu.ucsb.cs156.happiercows.entities.ChatMessage;
-
+import edu.ucsb.cs156.happiercows.entities.User;
 import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
 import edu.ucsb.cs156.happiercows.entities.UserCommons;
 
@@ -74,7 +75,7 @@ public class ChatMessageControllerTests extends ControllerTestCase {
 
         when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
         
-        UserCommons userCommons = UserCommons.builder().showChat(true).build();
+        UserCommons userCommons = UserCommons.builder().build();
         when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
 
 
@@ -236,9 +237,10 @@ public class ChatMessageControllerTests extends ControllerTestCase {
 
         when(chatMessageRepository.findByCommonsIdAndHidden(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
 
-        UserCommons userCommons = UserCommons.builder().showChat(false).build();
+        UserCommons userCommons = mock(UserCommons.class);
         when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
-
+        when(userCommons.getCommonsShowChat()).thenReturn(false);
+        
         // act
         mockMvc.perform(get("/api/chat/get?commonsId={commonsId}&page={page}&size={size}", commonsId, page, size))
             .andExpect(status().isForbidden()).andReturn();
@@ -432,6 +434,10 @@ public class ChatMessageControllerTests extends ControllerTestCase {
 
         ChatMessage chatMessage = ChatMessage.builder().id(messageId).userId(1L).build();
         when(chatMessageRepository.findById(messageId)).thenReturn(Optional.of(chatMessage));
+
+        UserCommons userCommons = mock(UserCommons.class);
+        when(userCommonsRepository.findByCommonsIdAndUserId(chatMessage.getCommonsId(), chatMessage.getUserId())).thenReturn(Optional.of(userCommons));
+        when(userCommons.getCommonsShowChat()).thenReturn(true);
 
         //act 
         MvcResult response = mockMvc.perform(put("/api/chat/hide?chatMessageId={messageId}", messageId).with(csrf()))

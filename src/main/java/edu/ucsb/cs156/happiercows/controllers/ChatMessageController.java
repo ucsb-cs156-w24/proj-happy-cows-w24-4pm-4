@@ -49,19 +49,17 @@ public class ChatMessageController extends ApiController{
                                             @Parameter(name="page") @RequestParam int page,
                                             @Parameter(name="size") @RequestParam int size) {
         
-        // Make sure the user is part of the commons or is an admin
+        // Make sure the user is an admin or part of the commons and showChat is true
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-
-        if (!isAdmin) {
+        if (!auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
             log.info("User is not an admin");
             User user = getCurrentUser().getUser();
             Long userId = user.getId();
             Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
-    
-            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().isShowChat()) {
+
+            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
+            }            
         }
 
         // Return the list of non-hidden chat messages
@@ -104,13 +102,13 @@ public class ChatMessageController extends ApiController{
         User user = getCurrentUser().getUser();
         Long userId = user.getId();
 
-        // Make sure the user is part of the commons or is an admin
+        // Make sure the user is an admin or part of the commons and showChat is true
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
             log.info("User is not an admin");
             Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
 
-            if (!userCommonsLookup.isPresent()) {
+            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         }
@@ -142,19 +140,27 @@ public class ChatMessageController extends ApiController{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         ChatMessage chatMessage = chatMessageLookup.get();
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
+            log.info("User is not an admin");
+            User user = getCurrentUser().getUser();
+            Long userId = user.getId();
 
-        User user = getCurrentUser().getUser();
-        Long userId = user.getId();
-
-        // Check if the user is the author of the message
-        if (chatMessage.getUserId() != userId) {
-            // Check if the user is an admin
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (!auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
+            Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(chatMessage.getCommonsId(), userId);
+            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {
+                log.info("showChat is false");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }           
+            
+            // Check if the user is the author of the message
+            if (chatMessage.getUserId() != userId) {
+                log.info("user is not author of the message");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         }
 
+        // Admin can hide any message by id
         // Hide the message
         chatMessage.setHidden(true);
         chatMessageRepository.save(chatMessage);

@@ -56,4 +56,9 @@ public class Commons {
         }
         return false;
     }
+
+
+    public boolean getShowChat() {
+        return showChat;
+    }
 }
