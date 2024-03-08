@@ -35,7 +35,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import edu.ucsb.cs156.happiercows.ControllerTestCase;
 import edu.ucsb.cs156.happiercows.repositories.ChatMessageRepository;
 import edu.ucsb.cs156.happiercows.entities.ChatMessage;
-import edu.ucsb.cs156.happiercows.entities.User;
 import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
 import edu.ucsb.cs156.happiercows.entities.UserCommons;
 
@@ -211,6 +210,7 @@ public class ChatMessageControllerTests extends ControllerTestCase {
 
         ChatMessage chatMessage1 = ChatMessage.builder().id(1L).commonsId(commonsId).build();
         ChatMessage chatMessage2 = ChatMessage.builder().id(2L).commonsId(commonsId).build();
+
         Page<ChatMessage> pageOfChatMessages = new PageImpl<>(Arrays.asList(chatMessage1, chatMessage2));
 
         when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending())))
@@ -235,7 +235,7 @@ public class ChatMessageControllerTests extends ControllerTestCase {
 
         Page<ChatMessage> pageOfChatMessages = new PageImpl<ChatMessage>(Arrays.asList(chatMessage1, chatMessage2));
 
-        when(chatMessageRepository.findByCommonsIdAndHidden(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
+        when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
 
         UserCommons userCommons = mock(UserCommons.class);
         when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
@@ -246,7 +246,7 @@ public class ChatMessageControllerTests extends ControllerTestCase {
             .andExpect(status().isForbidden()).andReturn();
 
         // assert
-        verify(chatMessageRepository, times(0)).findByCommonsIdAndHidden(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()));
+        verify(chatMessageRepository, times(0)).findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()));
 
     }
 
