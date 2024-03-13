@@ -52,19 +52,6 @@ public class AnnouncementsController extends ApiController {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/get")
     public ResponseEntity<String> getAnnouncements(@Parameter(description = "The id of the common") @RequestParam Long commonsId) throws JsonProcessingException {
-        
-        // Make sure the user is part of the commons or is an admin
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
-            log.info("User is not an admin");
-            User user = getCurrentUser().getUser();
-            Long userId = user.getId();
-            Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
-
-            if (!userCommonsLookup.isPresent()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
-        }
 
         // Return the list of announcements
         Iterable<Announcements> messages = announcementsRepository.findAllByCommonsId(commonsId);
@@ -76,7 +63,7 @@ public class AnnouncementsController extends ApiController {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/get/by-id")
     public ResponseEntity<String> getAnnouncementsById(@Parameter(description = "The id of the announcement") @RequestParam Long announcementId) throws JsonProcessingException {
-        
+
         // Try to get the announcement
         Optional<Announcements> announcementLookup = announcementsRepository.findById(announcementId);
         if (!announcementLookup.isPresent()) {

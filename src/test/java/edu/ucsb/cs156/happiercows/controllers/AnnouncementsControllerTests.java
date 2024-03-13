@@ -347,37 +347,6 @@ public class AnnouncementsControllerTests extends ControllerTestCase {
         assertEquals(actualAnnouncements, expectedAnnouncements);
     }
 
-    @WithMockUser(roles = {"USER"})
-    @Test
-    public void userNotInCommonsCannotGetAll() throws Exception {
-        List<Announcements> expectedAnnouncements = new ArrayList<Announcements>();
-        LocalDateTime someTime = LocalDateTime.parse("2022-03-05T15:50:10");
-
-        Commons commons = Commons.builder().build();
-        when(commonsRepository.findById(commons.getId())).thenReturn(Optional.of(commons));
-        
-        Long commonsId = commons.getId();
-        Long id = 0L;
-        Long userId = 1L;
-        String announcement = "test";
-        LocalDateTime start = LocalDateTime.parse("2022-03-05T15:50:10");
-        LocalDateTime end = LocalDateTime.parse("2022-03-05T15:50:10");
-
-        Announcements announcements1 = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(announcement).build();
-        Announcements announcements2 = Announcements.builder().id(id).commonsId(commonsId).start(start).end(end).announcement(announcement).build();
-        expectedAnnouncements.add(announcements1);
-        expectedAnnouncements.add(announcements2);
-
-        when(announcementsRepository.findAllByCommonsId(commonsId)).thenReturn(expectedAnnouncements);
-
-        UserCommons userCommons = UserCommons.builder().build();
-        when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.empty());
-
-        //act 
-        MvcResult response = mockMvc.perform(get("/api/announcements/get?commonsId={commonsId}", commonsId).with(csrf()))
-            .andExpect(status().isForbidden()).andReturn();
-    }
-
     @WithMockUser(roles = {"ADMIN"})
     @Test
     public void getByIdTest() throws Exception {
