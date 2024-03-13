@@ -1,5 +1,5 @@
 import React from "react";
-import { useTable, useSortBy } from 'react-table'
+import { useTable, useSortBy, usePagination } from 'react-table'
 import { Table, Button } from "react-bootstrap";
 import Plaintext from "main/components/Utils/Plaintext";
 // Stryker disable all
@@ -18,59 +18,80 @@ export default function OurTable({ columns, data, testid = "testid", ...rest }) 
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageCount,
+    nextPage,
+    previousPage,
+    state: { pageIndex }
   } = useTable({
     columns,
     data,
     ...(rest.initialState && {
       initialState: rest.initialState
     })
-  }, useSortBy)
+  }, useSortBy, usePagination)
 
   return (
-    <Table style={tableStyle} {...getTableProps()} striped bordered hover >
-      <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                data-testid={`${testid}-header-${column.id}`}
-              >
-                {column.render('Header')}
-                <span data-testid={`${testid}-header-${column.id}-sort-carets`}>
-                  {column.isSorted
-                    ? column.isSortedDesc
-                      ? ' 🔽'
-                      : ' 🔼'
-                    : ''}
-                </span>
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell, _index) => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
-                    data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}`}
-                  >
-                    {cell.render('Cell')}
-                  </td>
-                )
-              })}
+    <>
+      <Table style={tableStyle} {...getTableProps()} striped bordered hover >
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  data-testid={`${testid}-header-${column.id}`}
+                >
+                  {column.render('Header')}
+                  <span data-testid={`${testid}-header-${column.id}-sort-carets`}>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+                </th>
+              ))}
             </tr>
-          )
-        })}
-      </tbody>
-    </Table>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {page.map(
+            (row) =>
+              prepareRow(row) || (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell, _index) => {
+                    return (
+                      <td
+                        {...cell.getCellProps()}
+                        data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}`}
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    )
+                  })}
+                </tr>
+              )
+          )}
+        </tbody>
+      </Table>
+      {pageCount>1 && (
+        <div data-testid='pagination-ui'>
+          <button onClick={() => previousPage()} disabled={!canPreviousPage} data-testid='goto-previous-page-button'>
+            {'<'}
+          </button>
+          <button onClick={() => nextPage()} disabled={!canNextPage} data-testid='goto-next-page-button'>
+            {'>'}
+          </button>
+          <span data-testid={'page-indicator'}>
+            Page{' '}<strong>{pageIndex + 1} of {pageCount}</strong>
+          </span>
+        </div>
+      )}
+    </>
   )
 }
 
