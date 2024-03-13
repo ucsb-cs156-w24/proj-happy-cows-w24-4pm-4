@@ -55,12 +55,17 @@ public class UserCommons {
 <span class="fc" id="L55">        return commons.getId();</span>
     }
 
+    @JsonInclude
+    public boolean getCommonsShowChat() {
+<span class="fc" id="L60">        return commons.getShowChat();</span>
+    }
+
     public void setId(UserCommonsKey id) {
-<span class="fc" id="L59">        this.id = id;</span>
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L64">        this.id = id;</span>
+<span class="fc" id="L65">    }</span>
     
     public UserCommonsKey getId() {
-<span class="fc" id="L63">        return this.id;</span>
+<span class="fc" id="L68">        return this.id;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
