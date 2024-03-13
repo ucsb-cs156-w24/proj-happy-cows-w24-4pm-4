@@ -11,7 +11,7 @@
 
 | Type | Link       | 
 |------|------------|
-| prod | <https://happycows.dokku-00.cs.ucsb.edu/>     | 
+| prod | <https://happycows.dokku-04.cs.ucsb.edu/>     | 
 | qa   | <https://happycows-qa.dokku-04.cs.ucsb.edu/>  | 
 
 # W24 Production Deployments
