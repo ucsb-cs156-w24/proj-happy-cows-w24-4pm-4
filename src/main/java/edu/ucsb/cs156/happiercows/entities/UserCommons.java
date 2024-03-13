@@ -55,6 +55,11 @@ public class UserCommons {
         return commons.getId();
     }
 
+    @JsonInclude
+    public boolean getCommonsShowChat() {
+        return commons.getShowChat();
+    }
+
     public void setId(UserCommonsKey id) {
         this.id = id;
     }

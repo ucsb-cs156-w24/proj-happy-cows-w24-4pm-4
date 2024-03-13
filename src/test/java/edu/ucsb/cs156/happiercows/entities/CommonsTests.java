@@ -25,4 +25,12 @@ public class CommonsTests {
     void test_gameInProgress_ended() throws Exception {
         assertEquals(false, Commons.builder().startingDate(start).lastDate(end2).build().gameInProgress());       
     }
+    @Test
+    void test_getShowChat_true() throws Exception {
+        assertEquals(true, Commons.builder().startingDate(start).lastDate(end2).build().getShowChat());       
+    }
+    @Test
+    void test_getShowChat_false() throws Exception {
+        assertEquals(false, Commons.builder().startingDate(start).lastDate(end2).showChat(false).build().getShowChat());       
+    }
 }
