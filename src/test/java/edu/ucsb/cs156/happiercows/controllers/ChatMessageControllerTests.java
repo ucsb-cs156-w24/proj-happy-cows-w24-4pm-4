@@ -2,6 +2,7 @@ package edu.ucsb.cs156.happiercows.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,7 +35,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import edu.ucsb.cs156.happiercows.ControllerTestCase;
 import edu.ucsb.cs156.happiercows.repositories.ChatMessageRepository;
 import edu.ucsb.cs156.happiercows.entities.ChatMessage;
-
 import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
 import edu.ucsb.cs156.happiercows.entities.UserCommons;
 
@@ -73,10 +73,10 @@ public class ChatMessageControllerTests extends ControllerTestCase {
         Page<ChatMessage> pageOfChatMessages = new PageImpl<ChatMessage>(Arrays.asList(chatMessage1, chatMessage2));
 
         when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
-        
-        UserCommons userCommons = UserCommons.builder().build();
-        when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
 
+        UserCommons userCommons = mock(UserCommons.class);
+        when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
+        when(userCommons.getCommonsShowChat()).thenReturn(true);
 
         // act
         MvcResult response = mockMvc.perform(get("/api/chat/get?commonsId={commonsId}&page={page}&size={size}", commonsId, page, size))
@@ -200,6 +200,57 @@ public class ChatMessageControllerTests extends ControllerTestCase {
         verify(chatMessageRepository, times(0)).findAllByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()));
     }
 
+    @WithMockUser(roles = {"ADMIN"})
+    @Test
+    public void adminAlwaysGetsResponseRegardlessOfShowChat() throws Exception {
+        // arrange
+        Long commonsId = 1L;
+        int page = 0;
+        int size = 10;
+
+        ChatMessage chatMessage1 = ChatMessage.builder().id(1L).commonsId(commonsId).build();
+        ChatMessage chatMessage2 = ChatMessage.builder().id(2L).commonsId(commonsId).build();
+
+        Page<ChatMessage> pageOfChatMessages = new PageImpl<>(Arrays.asList(chatMessage1, chatMessage2));
+
+        when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending())))
+            .thenReturn(pageOfChatMessages);
+
+        //assert
+        mockMvc.perform(get("/api/chat/get?commonsId={commonsId}&page={page}&size={size}", commonsId, page, size))
+            .andExpect(status().isOk());
+        verify(chatMessageRepository, atLeastOnce()).findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()));
+    }
+
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void userGetsForbiddenIfShowChatIsFalse() throws Exception {
+        Long commonsId = 1L;
+        Long userId = 1L;
+        int page = 0;
+        int size = 10;
+
+        ChatMessage chatMessage1 = ChatMessage.builder().id(1L).commonsId(commonsId).hidden(true).build();
+        ChatMessage chatMessage2 = ChatMessage.builder().id(2L).commonsId(commonsId).hidden(true).build();
+
+        Page<ChatMessage> pageOfChatMessages = new PageImpl<ChatMessage>(Arrays.asList(chatMessage1, chatMessage2));
+
+        when(chatMessageRepository.findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()))).thenReturn(pageOfChatMessages);
+
+        UserCommons userCommons = mock(UserCommons.class);
+        when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
+        when(userCommons.getCommonsShowChat()).thenReturn(false);
+        
+        // act
+        mockMvc.perform(get("/api/chat/get?commonsId={commonsId}&page={page}&size={size}", commonsId, page, size))
+            .andExpect(status().isForbidden()).andReturn();
+
+        // assert
+        verify(chatMessageRepository, times(0)).findByCommonsId(commonsId, PageRequest.of(page, size, Sort.by("timestamp").descending()));
+
+    }
+
+
     //* */ admin/hidden tests
     @WithMockUser(roles = {"ADMIN"})
     @Test
@@ -267,8 +318,9 @@ public class ChatMessageControllerTests extends ControllerTestCase {
 
         when(chatMessageRepository.save(any(ChatMessage.class))).thenReturn(chatMessage);
         
-        UserCommons userCommons = UserCommons.builder().build();
+        UserCommons userCommons = mock(UserCommons.class);
         when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
+        when(userCommons.getCommonsShowChat()).thenReturn(true);
 
         //act 
         MvcResult response = mockMvc.perform(post("/api/chat/post?commonsId={commonsId}&content={content}", commonsId, content).with(csrf()))
@@ -280,6 +332,31 @@ public class ChatMessageControllerTests extends ControllerTestCase {
         String expectedResponseString = mapper.writeValueAsString(chatMessage);
         log.info("Got back from API: {}",responseString);
         assertEquals(expectedResponseString, responseString);
+    }
+
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void userInCommonsCannotPostChatMessagesIfShowChatFalse() throws Exception {
+        
+        // arrange
+        Long commonsId = 1L;
+        Long userId = 1L;
+        String content = "Hello world!";
+
+        ChatMessage chatMessage = ChatMessage.builder().id(0L).commonsId(commonsId).userId(userId).message(content).build();
+
+        when(chatMessageRepository.save(any(ChatMessage.class))).thenReturn(chatMessage);
+        
+        UserCommons userCommons = mock(UserCommons.class);
+        when(userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)).thenReturn(Optional.of(userCommons));
+        when(userCommons.getCommonsShowChat()).thenReturn(false);
+
+        //act 
+        mockMvc.perform(post("/api/chat/post?commonsId={commonsId}&content={content}", commonsId, content).with(csrf()))
+            .andExpect(status().isForbidden()).andReturn();
+
+        // verify
+        verify(chatMessageRepository, times(0)).save(any(ChatMessage.class));
     }
 
     @WithMockUser(roles = {"USER"})

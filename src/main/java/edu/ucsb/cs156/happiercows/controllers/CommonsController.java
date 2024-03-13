@@ -17,13 +17,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import edu.ucsb.cs156.happiercows.services.CommonsPlusBuilderService;
-
 
 import java.util.Optional;
 
@@ -126,7 +126,7 @@ public class CommonsController extends ApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<String> updateCommons(
-            @Parameter(name="commons identifier") @RequestParam long id,
+            @Parameter(name="id") @RequestParam long id,
             @Parameter(name="request body") @RequestBody CreateCommonsParams params
     ) {
         Optional<Commons> existing = commonsRepository.findById(id);
@@ -149,6 +149,7 @@ public class CommonsController extends ApiController {
         updated.setStartingDate(params.getStartingDate());
         updated.setLastDate(params.getLastDate());
         updated.setShowLeaderboard(params.getShowLeaderboard());
+        updated.setShowChat(params.getShowChat());
         updated.setDegradationRate(params.getDegradationRate());
         updated.setCapacityPerUser(params.getCapacityPerUser());
         updated.setCarryingCapacity(params.getCarryingCapacity());
@@ -216,6 +217,7 @@ public class CommonsController extends ApiController {
                 .lastDate(params.getLastDate())
                 .degradationRate(params.getDegradationRate())
                 .showLeaderboard(params.getShowLeaderboard())
+                .showChat(params.getShowChat())
                 .capacityPerUser(params.getCapacityPerUser())
                 .carryingCapacity(params.getCarryingCapacity());
 
@@ -289,6 +291,19 @@ public class CommonsController extends ApiController {
             // user is already a member of this commons
             String body = mapper.writeValueAsString(joinedCommons);
             return ResponseEntity.ok().body(body);
+        }
+
+        if (joinedCommons.gameInProgress() == false){
+            /*
+            String body = mapper.writeValueAsString(joinedCommons);
+            return ResponseEntity.ok().body(body);
+            */
+            
+            String responseString = String.format("Cannot join commons with id %d. Commons has not started yet." , joinedCommons.getId());
+            responseString += " It starts on ";
+            responseString += joinedCommons.getStartingDate().toString();
+            //throw new IllegalArgumentException(responseString);
+            return ResponseEntity.ok().body(responseString);
         }
 
         UserCommons uc = UserCommons.builder()

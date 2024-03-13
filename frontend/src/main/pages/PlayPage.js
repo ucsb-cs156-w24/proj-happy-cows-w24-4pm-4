@@ -10,6 +10,7 @@ import ManageCows from "main/components/Commons/ManageCows";
 import Profits from "main/components/Commons/Profits";
 import { useBackend, useBackendMutation } from "main/utils/useBackend";
 import { useCurrentUser } from "main/utils/currentUser";
+import { hasRole } from "main/utils/currentUser";
 import Background from "../../assets/PlayPageBackground.jpg";
 import ChatPanel from "main/components/Chat/ChatPanel";
 import ManageCowsModal from "main/components/Commons/ManageCowsModal";
@@ -193,25 +194,28 @@ export default function PlayPage() {
                         </CardGroup>
                     )}
                 </Container>
+
             </BasicLayout>
-            <div style={chatContainerStyle} data-testid="playpage-chat-div">
-                {!!isChatOpen && <ChatPanel commonsId={commonsId} />}
-                <Button
-                    style={chatButtonStyle}
-                    onClick={toggleChatWindow}
-                    data-testid="playpage-chat-toggle"
-                >
-                    {!!isChatOpen ? (
-                        <span style={emojiStyle} data-testid="close-icon">
-                            ❌
-                        </span>
-                    ) : (
-                        <span style={emojiStyle} data-testid="message-icon">
-                            💬
-                        </span>
-                    )}
-                </Button>
-            </div>
+            { (hasRole(currentUser, "ROLE_ADMIN") || (!!commonsPlus && commonsPlus.commons.showChat)) &&
+                <div style={chatContainerStyle} data-testid="playpage-chat-div">
+                    {!!isChatOpen && <ChatPanel commonsId={commonsId} />}
+                    <Button
+                        style={chatButtonStyle}
+                        onClick={toggleChatWindow}
+                        data-testid="playpage-chat-toggle"
+                    >
+                        {!!isChatOpen ? (
+                            <span style={emojiStyle} data-testid="close-icon">
+                                ❌
+                            </span>
+                        ) : (
+                            <span style={emojiStyle} data-testid="message-icon">
+                                💬
+                            </span>
+                        )}
+                    </Button>
+                </div>
+            }
         </div>
     );
 }

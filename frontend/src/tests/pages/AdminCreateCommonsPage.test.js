@@ -70,6 +70,7 @@ describe("AdminCreateCommonsPage tests", () => {
             "aboveCapacityHealthUpdateStrategy": "strat2",
             "belowCapacityHealthUpdateStrategy": "strat3",
             "showLeaderboard": false,
+            "showChat": false
         });
 
         render(
@@ -94,6 +95,7 @@ describe("AdminCreateCommonsPage tests", () => {
         const aboveCapacityHealthUpdateStrategyField = screen.getByLabelText("When above capacity");
         const belowCapacityHealthUpdateStrategyField = screen.getByLabelText("When below capacity");
         const showLeaderboardField = screen.getByLabelText("Show Leaderboard?");
+        const showChatField = screen.getByLabelText("Show Chat?");
         const button = screen.getByTestId("CommonsForm-Submit-Button");
 
         fireEvent.change(commonsNameField, { target: { value: 'My New Commons' } })
@@ -106,6 +108,7 @@ describe("AdminCreateCommonsPage tests", () => {
         fireEvent.change(capacityPerUserField, { target: { value: '10' } })
         fireEvent.change(carryingCapacityField, { target: { value: '25' } })
         fireEvent.change(showLeaderboardField, { target: { value: true } })
+        fireEvent.change(showChatField, {target: { value: true} })
 
         fireEvent.change(aboveCapacityHealthUpdateStrategyField, { target: {value: 'strat2' } })
         fireEvent.change(belowCapacityHealthUpdateStrategyField, { target: {value: 'strat3' } })
@@ -128,6 +131,7 @@ describe("AdminCreateCommonsPage tests", () => {
             startingDate: '2022-03-05T00:00:00.000Z',
             lastDate: '2023-03-05T00:00:00.000Z',
             showLeaderboard: false,
+            showChat: false,
             aboveCapacityHealthUpdateStrategy: "strat2",
             belowCapacityHealthUpdateStrategy: "strat3",
         };
