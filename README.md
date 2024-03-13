@@ -7,6 +7,13 @@
 | prod | <https://happycows.dokku-00.cs.ucsb.edu/>     | 
 | qa   | <https://happycows-qa.dokku-00.cs.ucsb.edu/>  | 
 
+# 4pm-4 Deployments
+
+| Type | Link       | 
+|------|------------|
+| prod | <https://happycows.dokku-00.cs.ucsb.edu/>     | 
+| qa   | <https://happycows-qa.dokku-04.cs.ucsb.edu/>  | 
+
 # W24 Production Deployments
 
 
