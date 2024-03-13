@@ -17,13 +17,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import edu.ucsb.cs156.happiercows.services.CommonsPlusBuilderService;
-
 
 import java.util.Optional;
 
@@ -291,22 +291,35 @@ import java.util.Optional;
 <span class="fc" id="L291">            return ResponseEntity.ok().body(body);</span>
         }
 
-<span class="fc" id="L294">        UserCommons uc = UserCommons.builder()</span>
-<span class="fc" id="L295">                .user(u)</span>
-<span class="fc" id="L296">                .commons(joinedCommons)</span>
-<span class="fc" id="L297">                .username(username)</span>
-<span class="fc" id="L298">                .totalWealth(joinedCommons.getStartingBalance())</span>
-<span class="fc" id="L299">                .numOfCows(0)</span>
-<span class="fc" id="L300">                .cowHealth(100)</span>
-<span class="fc" id="L301">                .cowsBought(0)</span>
-<span class="fc" id="L302">                .cowsSold(0)</span>
-<span class="fc" id="L303">                .cowDeaths(0)</span>
-<span class="fc" id="L304">                .build();</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">        if (joinedCommons.gameInProgress() == false){</span>
+            /*
+            String body = mapper.writeValueAsString(joinedCommons);
+            return ResponseEntity.ok().body(body);
+            */
+            
+<span class="fc" id="L300">            String responseString = String.format(&quot;Cannot join commons with id %d. Commons has not started yet.&quot; , joinedCommons.getId());</span>
+<span class="fc" id="L301">            responseString += &quot; It starts on &quot;;</span>
+<span class="fc" id="L302">            responseString += joinedCommons.getStartingDate().toString();</span>
+            //throw new IllegalArgumentException(responseString);
+<span class="fc" id="L304">            return ResponseEntity.ok().body(responseString);</span>
+        }
 
-<span class="fc" id="L306">        userCommonsRepository.save(uc);</span>
+<span class="fc" id="L307">        UserCommons uc = UserCommons.builder()</span>
+<span class="fc" id="L308">                .user(u)</span>
+<span class="fc" id="L309">                .commons(joinedCommons)</span>
+<span class="fc" id="L310">                .username(username)</span>
+<span class="fc" id="L311">                .totalWealth(joinedCommons.getStartingBalance())</span>
+<span class="fc" id="L312">                .numOfCows(0)</span>
+<span class="fc" id="L313">                .cowHealth(100)</span>
+<span class="fc" id="L314">                .cowsBought(0)</span>
+<span class="fc" id="L315">                .cowsSold(0)</span>
+<span class="fc" id="L316">                .cowDeaths(0)</span>
+<span class="fc" id="L317">                .build();</span>
 
-<span class="fc" id="L308">        String body = mapper.writeValueAsString(joinedCommons);</span>
-<span class="fc" id="L309">        return ResponseEntity.ok().body(body);</span>
+<span class="fc" id="L319">        userCommonsRepository.save(uc);</span>
+
+<span class="fc" id="L321">        String body = mapper.writeValueAsString(joinedCommons);</span>
+<span class="fc" id="L322">        return ResponseEntity.ok().body(body);</span>
     }
 
     @Operation(summary = &quot;Delete a Commons&quot;)
@@ -315,19 +328,19 @@ import java.util.Optional;
     public Object deleteCommons(
             @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
         
-<span class="fc" id="L318">        Iterable&lt;UserCommons&gt; userCommons = userCommonsRepository.findByCommonsId(id);</span>
+<span class="fc" id="L331">        Iterable&lt;UserCommons&gt; userCommons = userCommonsRepository.findByCommonsId(id);</span>
 
-<span class="fc bfc" id="L320" title="All 2 branches covered.">        for (UserCommons commons : userCommons) {</span>
-<span class="fc" id="L321">            userCommonsRepository.delete(commons);</span>
-<span class="fc" id="L322">        }</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        for (UserCommons commons : userCommons) {</span>
+<span class="fc" id="L334">            userCommonsRepository.delete(commons);</span>
+<span class="fc" id="L335">        }</span>
 
-<span class="fc" id="L324">        commonsRepository.findById(id)</span>
-<span class="fc" id="L325">                .orElseThrow(() -&gt; new EntityNotFoundException(Commons.class, id));</span>
+<span class="fc" id="L337">        commonsRepository.findById(id)</span>
+<span class="fc" id="L338">                .orElseThrow(() -&gt; new EntityNotFoundException(Commons.class, id));</span>
 
-<span class="fc" id="L327">        commonsRepository.deleteById(id);</span>
+<span class="fc" id="L340">        commonsRepository.deleteById(id);</span>
 
-<span class="fc" id="L329">        String responseString = String.format(&quot;commons with id %d deleted&quot;, id);</span>
-<span class="fc" id="L330">        return genericMessage(responseString);</span>
+<span class="fc" id="L342">        String responseString = String.format(&quot;commons with id %d deleted&quot;, id);</span>
+<span class="fc" id="L343">        return genericMessage(responseString);</span>
 
     }
 
@@ -337,16 +350,16 @@ import java.util.Optional;
     public Object deleteUserFromCommon(@PathVariable(&quot;commonsId&quot;) Long commonsId,
                                        @PathVariable(&quot;userId&quot;) Long userId) throws Exception {
 
-<span class="fc" id="L340">        UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)</span>
-<span class="fc" id="L341">                .orElseThrow(() -&gt; new EntityNotFoundException(</span>
+<span class="fc" id="L353">        UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)</span>
+<span class="fc" id="L354">                .orElseThrow(() -&gt; new EntityNotFoundException(</span>
                         UserCommons.class, &quot;commonsId&quot;, commonsId, &quot;userId&quot;, userId)
                 );
 
-<span class="fc" id="L345">        userCommonsRepository.delete(userCommons);</span>
+<span class="fc" id="L358">        userCommonsRepository.delete(userCommons);</span>
 
-<span class="fc" id="L347">        String responseString = String.format(&quot;user with id %d deleted from commons with id %d, %d users remain&quot;, userId, commonsId, commonsRepository.getNumUsers(commonsId).orElse(0));</span>
+<span class="fc" id="L360">        String responseString = String.format(&quot;user with id %d deleted from commons with id %d, %d users remain&quot;, userId, commonsId, commonsRepository.getNumUsers(commonsId).orElse(0));</span>
 
-<span class="fc" id="L349">        return genericMessage(responseString);</span>
+<span class="fc" id="L362">        return genericMessage(responseString);</span>
     }
 
     
