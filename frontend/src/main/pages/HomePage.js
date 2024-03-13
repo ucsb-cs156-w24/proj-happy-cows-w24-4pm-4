@@ -8,6 +8,7 @@ import { useBackend, useBackendMutation } from "main/utils/useBackend";
 import { useCurrentUser } from "main/utils/currentUser";
 import { commonsNotJoined } from "main/utils/commonsUtils";
 import getBackgroundImage from "main/components/Utils/HomePageBackground";
+import { onDeleteSuccess } from "main/utils/commonsUtils";
 
 import "./HomePage.css"
 
@@ -36,7 +37,7 @@ export default function HomePage({hour=null}) {
   // Stryker disable all : it is acceptable to exclude useBackendMutation calls from mutation testing
   const mutation = useBackendMutation(
     objectToAxiosParams,
-    {},
+    { onSuccess: onDeleteSuccess },
     ["/api/currentUser"]
   );
   // Stryker restore all

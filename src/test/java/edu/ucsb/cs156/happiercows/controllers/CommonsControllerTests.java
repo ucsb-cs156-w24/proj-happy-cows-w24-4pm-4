@@ -14,7 +14,6 @@ import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
 import edu.ucsb.cs156.happiercows.repositories.UserRepository;
 import edu.ucsb.cs156.happiercows.strategies.CowHealthUpdateStrategies;
 import edu.ucsb.cs156.happiercows.services.CommonsPlusBuilderService;
-import lombok.With;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -690,18 +689,28 @@ public class CommonsControllerTests extends ControllerTestCase {
     @WithMockUser(roles = {"USER"})
     @Test
     public void joinCommonsTest() throws Exception {
+        LocalDateTime someTime = LocalDateTime.parse("2024-02-24T15:50:10");
+        LocalDateTime endTime = LocalDateTime.parse("2024-05-05T15:50:10");
 
         Commons c = Commons.builder()
-                .id(2L)
-                .name("Example Commons")
+                .name("Jackson's Commons")
+                .cowPrice(500.99)
+                .milkPrice(8.99)
+                .startingBalance(1020.10)
+                .startingDate(someTime)
+                .lastDate(endTime)
+                .degradationRate(8.49)
+                .showLeaderboard(false)
+                .capacityPerUser(10)
+                .carryingCapacity(100)
                 .build();
 
         UserCommons uc = UserCommons.builder()
                 .user(currentUserService.getUser())
                 .commons(c)
                 .username("Fake user")
-                .totalWealth(0)
-                .numOfCows(0)
+                .totalWealth(100)
+                .numOfCows(100)
                 .cowHealth(100)
                 .build();
 
@@ -716,9 +725,8 @@ public class CommonsControllerTests extends ControllerTestCase {
                 .perform(post("/api/commons/join?commonsId=2").with(csrf()))
                 .andExpect(status().isOk()).andReturn();
 
-        verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(2L, 1L);
-        verify(userCommonsRepository, times(1)).save(uc);
 
+        verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(2L, 1L);
         
         String responseString = response.getResponse().getContentAsString();
         String cAsJson = mapper.writeValueAsString(c);
@@ -729,10 +737,14 @@ public class CommonsControllerTests extends ControllerTestCase {
     @WithMockUser(roles = {"USER"})
     @Test
     public void already_joined_common_test() throws Exception {
+        LocalDateTime someTime = LocalDateTime.parse("2022-03-01T15:50:10");
+        LocalDateTime endTime = LocalDateTime.parse("2022-05-05T15:50:10");
 
         Commons c = Commons.builder()
                 .id(2L)
                 .name("Example Commons")
+                .startingDate(someTime)
+                .lastDate(endTime)
                 .build();
 
         UserCommons uc = UserCommons.builder()
@@ -763,6 +775,51 @@ public class CommonsControllerTests extends ControllerTestCase {
         String cAsJson = mapper.writeValueAsString(c);
 
         assertEquals(responseString, cAsJson);
+    }
+
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void joinFutureCommons() throws Exception {
+        LocalDateTime someTime = LocalDateTime.parse("2024-04-24T15:50:10");
+        LocalDateTime endTime = LocalDateTime.parse("2024-05-05T15:50:10");
+
+        Commons c = Commons.builder()
+                .name("Jackson's Commons")
+                .cowPrice(500.99)
+                .milkPrice(8.99)
+                .startingBalance(1020.10)
+                .startingDate(someTime)
+                .lastDate(endTime)
+                .degradationRate(8.49)
+                .showLeaderboard(false)
+                .capacityPerUser(10)
+                .carryingCapacity(100)
+                .build();
+
+        UserCommons uc = UserCommons.builder()
+                .user(currentUserService.getUser())
+                .commons(c)
+                .username("Fake user")
+                .totalWealth(100)
+                .numOfCows(100)
+                .cowHealth(100)
+                .build();
+
+        when(userCommonsRepository.findByCommonsIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.empty());
+        when(userCommonsRepository.save(eq(uc))).thenReturn(uc);
+        when(commonsRepository.findById(eq(2L))).thenReturn(Optional.of(c));
+
+        MvcResult response = mockMvc
+                .perform(post("/api/commons/join?commonsId=2").with(csrf()))
+                .andExpect(status().isOk()).andReturn();
+
+
+        verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(2L, 1L);
+        
+        String responseString = response.getResponse().getContentAsString();
+        String responseStr = "Cannot join commons with id 0. Commons has not started yet. It starts on 2024-04-24T15:50:10";
+
+        assertEquals(responseString, responseStr);
     }
 
 
