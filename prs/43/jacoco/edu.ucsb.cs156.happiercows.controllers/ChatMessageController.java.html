@@ -49,7 +49,7 @@ import java.util.Optional;
                                             @Parameter(name=&quot;page&quot;) @RequestParam int page,
                                             @Parameter(name=&quot;size&quot;) @RequestParam int size) {
         
-        // Make sure the user is part of the commons or is an admin
+        // Make sure the user is an admin or part of the commons and showChat is true
 <span class="fc" id="L53">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
 <span class="fc bfc" id="L54" title="All 2 branches covered.">        if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))){</span>
 <span class="fc" id="L55">            log.info(&quot;User is not an admin&quot;);</span>
@@ -57,9 +57,9 @@ import java.util.Optional;
 <span class="fc" id="L57">            Long userId = user.getId();</span>
 <span class="fc" id="L58">            Optional&lt;UserCommons&gt; userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);</span>
 
-<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (!userCommonsLookup.isPresent()) {</span>
+<span class="fc bfc" id="L60" title="All 4 branches covered.">            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {</span>
 <span class="fc" id="L61">                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();</span>
-            }
+            }            
         }
 
         // Return the list of non-hidden chat messages
@@ -102,13 +102,13 @@ import java.util.Optional;
 <span class="fc" id="L102">        User user = getCurrentUser().getUser();</span>
 <span class="fc" id="L103">        Long userId = user.getId();</span>
 
-        // Make sure the user is part of the commons or is an admin
+        // Make sure the user is an admin or part of the commons and showChat is true
 <span class="fc" id="L106">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
 <span class="fc bfc" id="L107" title="All 2 branches covered.">        if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))){</span>
 <span class="fc" id="L108">            log.info(&quot;User is not an admin&quot;);</span>
 <span class="fc" id="L109">            Optional&lt;UserCommons&gt; userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);</span>
 
-<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (!userCommonsLookup.isPresent()) {</span>
+<span class="fc bfc" id="L111" title="All 4 branches covered.">            if (!userCommonsLookup.isPresent() || !userCommonsLookup.get().getCommonsShowChat()) {</span>
 <span class="fc" id="L112">                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();</span>
             }
         }
@@ -140,24 +140,27 @@ import java.util.Optional;
 <span class="fc" id="L140">            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();</span>
         }
 <span class="fc" id="L142">        ChatMessage chatMessage = chatMessageLookup.get();</span>
+        
+<span class="fc" id="L144">        Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))){</span>
+<span class="fc" id="L146">            log.info(&quot;User is not an admin&quot;);</span>
+<span class="fc" id="L147">            User user = getCurrentUser().getUser();</span>
+<span class="fc" id="L148">            Long userId = user.getId();</span>
 
-<span class="fc" id="L144">        User user = getCurrentUser().getUser();</span>
-<span class="fc" id="L145">        Long userId = user.getId();</span>
 
-        // Check if the user is the author of the message
-<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (chatMessage.getUserId() != userId) {</span>
-            // Check if the user is an admin
-<span class="fc" id="L150">            Authentication auth = SecurityContextHolder.getContext().getAuthentication();</span>
-<span class="fc bfc" id="L151" title="All 2 branches covered.">            if (!auth.getAuthorities().stream().anyMatch(a -&gt; a.getAuthority().equals(&quot;ROLE_ADMIN&quot;))){</span>
-<span class="fc" id="L152">                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();</span>
-            }
+            // Check if the user is the author of the message
+<span class="fc bfc" id="L152" title="All 2 branches covered.">            if (chatMessage.getUserId() != userId) {</span>
+<span class="fc" id="L153">                log.info(&quot;user is not author of the message&quot;);</span>
+<span class="fc" id="L154">                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();</span>
+            }   
         }
 
+        // Admin can hide any message by id
         // Hide the message
-<span class="fc" id="L157">        chatMessage.setHidden(true);</span>
-<span class="fc" id="L158">        chatMessageRepository.save(chatMessage);</span>
+<span class="fc" id="L160">        chatMessage.setHidden(true);</span>
+<span class="fc" id="L161">        chatMessageRepository.save(chatMessage);</span>
 
-<span class="fc" id="L160">        return ResponseEntity.ok(chatMessage);</span>
+<span class="fc" id="L163">        return ResponseEntity.ok(chatMessage);</span>
     }
 
     
